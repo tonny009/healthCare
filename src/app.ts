@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
+import { prisma } from "./app/lib/prisma";
 //import { prisma } from "./app/lib/prisma";
-//import { IndexRoutes } from "./app/routes";
+import { IndexRoutes } from "./app/routes";
 
 const app: Application = express();
 
@@ -11,23 +12,29 @@ app.use(express.urlencoded({ extended: true }));
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-//app.use("/api/v1", IndexRoutes);
+app.use("/api/v1", IndexRoutes);
 
 // Basic route
 app.get('/', async (req: Request, res: Response) => {
+    try {
+        const specialty = await prisma.specialty.create({
+            data: {
+                title: 'Cardiology'
+            }
+        });
 
-    res.send('API is working');
-
-    /*const specialty = await prisma.specialty.create({
-        data: {
-            title: 'Cardiology'
-        }
-    })
-    res.status(201).json({
-        success: true,
-        message: 'API is working',
-        data: specialty
-    })*/
+        res.status(201).json({
+            success: true,
+            message: 'API is working',
+            data: specialty
+        });
+    } catch (error) {
+        console.error('Failed to create specialty:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Failed to create specialty'
+        });
+    }
 });
 
 export default app;

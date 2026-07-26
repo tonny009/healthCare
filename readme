@@ -1,3 +1,12 @@
-eslint : https://typescript-eslint.io/getting-started
-expres and ts setup : https://dev.to/justwonder/setting-up-an-express-typescript-server-a-step-by-step-guide-gic
-prisma setup: https://www.prisma.io/docs/prisma-orm/quickstart/prisma-postgres
+eslint : 
+https://typescript-eslint.io/getting-started
+
+express and ts setup : 
+
+https://dev.to/justwonder/setting-up-an-express-typescript-server-a-step-by-step-guide-gic
+
+prisma setup: 
+https://www.prisma.io/docs/prisma-orm/quickstart/prisma-postgres
+
+Better auth : 
+https://better-auth.com/docs/concepts/cli
