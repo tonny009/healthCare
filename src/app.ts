@@ -2,6 +2,7 @@ import express, { Application, Request, Response } from "express";
 import { prisma } from "./app/lib/prisma";
 //import { prisma } from "./app/lib/prisma";
 import { IndexRoutes } from "./app/routes";
+import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 
 const app: Application = express();
 
@@ -36,5 +37,7 @@ app.get('/', async (req: Request, res: Response) => {
         });
     }
 });
+
+app.use(globalErrorHandler);
 
 export default app;
