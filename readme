@@ -10,3 +10,8 @@ https://www.prisma.io/docs/prisma-orm/quickstart/prisma-postgres
 
 Better auth : 
 https://better-auth.com/docs/concepts/cli
+
+Check JWt toker details : https://www.jwt.io/
+
+JWT and cookie parser : 
+https://www.npmjs.com/package/cookie-parser

@@ -4,8 +4,8 @@ import ms, { StringValue } from "ms";
 import { envVars } from "../../config/env";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
-import { tokenUtils } from "../../utils/token";
 import { AuthService } from "./auth.service";
+import { tokenUtils } from "../../utils/token";
 
 const registerPatient = catchAsync(
     async (req: Request, res: Response) => {
