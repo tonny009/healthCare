@@ -4,6 +4,7 @@ import ms, { StringValue } from "ms";
 import { envVars } from "../../config/env";
 import { catchAsync } from "../../shared/catchAsync";
 import { sendResponse } from "../../shared/sendResponse";
+//import AppError from "../../errorHelpers/AppError";
 import { AuthService } from "./auth.service";
 import { tokenUtils } from "../../utils/token";
 
@@ -62,7 +63,22 @@ const loginUser = catchAsync(
     }
 )
 
+const getMe = catchAsync(
+    async (req: Request, res: Response) => {
+        const user = req.user;
+        console.log({user});
+        const result = await AuthService.getMe(user);
+        sendResponse(res, {
+            httpStatusCode: status.OK,
+            success: true,
+            message: "User profile fetched successfully",
+            data: result,
+        })
+    }
+)
+
 export const AuthController = {
     registerPatient,
     loginUser,
+    getMe
 };
