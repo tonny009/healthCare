@@ -1,3 +1,9 @@
+Some active commands: 
+pnpm dev 
+pnpm studio
+pnpm generate
+
+
 eslint : 
 https://typescript-eslint.io/getting-started
 
@@ -15,3 +21,7 @@ Check JWt toker details : https://www.jwt.io/
 
 JWT and cookie parser : 
 https://www.npmjs.com/package/cookie-parser
+
+ejs :  give email templates for email verification or other cases. 
+ https://www.npmjs.com/package/ejs
+
