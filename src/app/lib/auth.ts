@@ -24,7 +24,7 @@ export const auth = betterAuth({
         google:{
             clientId: envVars.GOOGLE_CLIENT_ID ?? "",
             clientSecret: envVars.GOOGLE_CLIENT_SECRET ?? "",
-            // callbackUrl: envVars.GOOGLE_CALLBACK_URL,
+            callbackUrl: envVars.GOOGLE_CALLBACK_URL,
             mapProfileToUser: ()=>{
                 return {
                     role : Role.PATIENT,
@@ -43,9 +43,6 @@ export const auth = betterAuth({
         sendOnSignUp: true,
         sendOnSignIn: true,
         autoSignInAfterVerification: true,
-
-
-
 
     },
 
@@ -137,8 +134,11 @@ export const auth = betterAuth({
             maxAge: 60 * 60 * 60 * 24, // 1 day in seconds
         }
     },
+    redirectURLs:{
+        signIn : `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
+    },
 
-    // trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000"],
+     trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:3000"],
 
     advanced: {
         // disableCSRFCheck: true,
