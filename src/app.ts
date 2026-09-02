@@ -4,8 +4,11 @@ import { prisma } from "./app/lib/prisma";
 import { IndexRoutes } from "./app/routes";
 import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 import cookieParser from "cookie-parser";
+import { auth } from "./app/lib/auth";
+import { toNodeHandler } from "better-auth/node";
 
 const app: Application = express();
+app.use("/api/auth",toNodeHandler(auth)); // Mount the auth router
 
 
 // Enable URL-encoded form data parsing
