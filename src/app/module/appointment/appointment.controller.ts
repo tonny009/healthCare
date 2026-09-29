@@ -1,0 +1,32 @@
+import { Request, Response } from "express";
+import status from "http-status";
+import { catchAsync } from "../../shared/catchAsync";
+import { sendResponse } from "../../shared/sendResponse";
+import { AppointmentService } from "./appointment.service";
+
+const bookAppointment = catchAsync( async (req : Request, res : Response) => {
+    const payload = req.body;
+    const user = req.user;
+    const appointment = await AppointmentService.bookAppointment(payload, user);
+    sendResponse(res, {
+        success: true,
+        httpStatusCode: status.CREATED, 
+        message: 'Appointment booked successfully',
+        data: appointment
+    });
+});
+
+const getAllAppointments = catchAsync(async (req: Request, res: Response) => {
+    const appointments = await AppointmentService.getAllAppointments();
+    sendResponse(res, {
+        success: true,
+        httpStatusCode: status.OK,
+        message: 'All appointments retrieved successfully',
+        data: appointments
+    });
+});
+
+export const AppointmentController = {
+    bookAppointment,
+    getAllAppointments
+}
