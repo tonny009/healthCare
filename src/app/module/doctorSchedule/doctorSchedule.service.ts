@@ -129,9 +129,27 @@ const updateMyDoctorSchedule = async (user : IRequestUser, payload: IUpdateDocto
 }
 
 
+const deleteMyDoctorSchedule = async (id: string, user: IRequestUser) => {
+    const doctorData = await prisma.doctor.findUniqueOrThrow({
+        where: {
+            email: user.email
+        }
+    });
+
+    await prisma.doctorSchedules.deleteMany({
+        where: {
+            isBooked: false,
+            doctorId: doctorData.id,
+            scheduleId: id
+        }
+    });
+}
+
+
 export const DoctorScheduleService = {
     createMyDoctorSchedule,
     getMyDoctorSchedules,
     updateMyDoctorSchedule,
-    getAllDoctorSchedules
+    getAllDoctorSchedules,
+    deleteMyDoctorSchedule
 }
