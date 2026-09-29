@@ -122,9 +122,54 @@ const getAllAppointments = async () => {
     return appointments;
 }
 
+const getMyAppointments = async (user: IRequestUser) => {
+    //user can be patient or doctor, so we need to check both
+    const patientData = await prisma.patient.findUnique({
+        where: {
+            email: user?.email
+        }
+    });
+
+    const doctorData = await prisma.doctor.findUnique({
+        where: {
+            email: user?.email
+        }
+    });
+
+    let appointments = [];
+
+    if (patientData) {
+        appointments = await prisma.appointment.findMany({
+            where: {
+                patientId: patientData.id
+            },
+            include: {
+                doctor: true,
+                schedule: true
+            }
+        });
+    } else if (doctorData) {
+        appointments = await prisma.appointment.findMany({
+            where: {
+                doctorId: doctorData.id
+            },
+            include: {
+                patient: true,
+                schedule: true
+            }
+        });
+    } else {
+        throw new Error("User not found");
+    }
+
+    return appointments;
+
+}
+
 
 
 export const AppointmentService = {
     bookAppointment,
-    getAllAppointments
+    getAllAppointments,
+    getMyAppointments   
 }
