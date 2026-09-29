@@ -37,6 +37,32 @@ const getMyAppointments = catchAsync(async (req: Request, res: Response) => {
         data: appointments
     });
 });
+const getMySingleAppointment = catchAsync(async (req: Request, res: Response) => {
+    const appointmentId = req.params.id;
+    const user = req.user;
+
+    const appointment = await AppointmentService.getMySingleAppointment(appointmentId as string, user);
+    sendResponse(res, {
+        success: true,
+        httpStatusCode: status.OK,
+        message: 'Appointment retrieved successfully',
+        data: appointment
+    });
+});
+
+const changeAppointmentStatus = catchAsync(async (req: Request, res: Response) => {
+    const appointmentId = req.params.id;
+    const payload = req.body;
+    const user = req.user;
+
+    const updatedAppointment = await AppointmentService.changeAppointmentStatus(appointmentId as string, payload, user);
+    sendResponse(res, {
+        success: true,
+        httpStatusCode: status.OK,
+        message: 'Appointment status updated successfully',
+        data: updatedAppointment
+    });
+});
 
 
 
@@ -44,4 +70,6 @@ export const AppointmentController = {
     bookAppointment,
     getAllAppointments,
     getMyAppointments,
+    getMySingleAppointment,
+    changeAppointmentStatus
 }

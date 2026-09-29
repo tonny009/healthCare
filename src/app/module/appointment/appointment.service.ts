@@ -3,11 +3,12 @@ import { v7 as uuidv7 } from "uuid";
 //import { PaymentStatus, Role } from "../../../generated/prisma/enums";
 import { envVars } from "../../config/env";
 //import { stripe } from "../../config/stripe.config";
-//import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "../../interfaces/requestUser.interface";
 import { prisma } from "../../lib/prisma";
-//import { AppointmentStatus } from './../../../generated/prisma/enums';
+import status from "http-status";
+import { AppointmentStatus } from './../../../generated/prisma/enums';
 import { IBookAppointmentPayload } from "./appointment.interface";
+import AppError from "../../errorHelpers/AppError";
 
 // Pay Now Book Appointment
 const bookAppointment = async (payload : IBookAppointmentPayload, user : IRequestUser) => {
@@ -166,10 +167,87 @@ const getMyAppointments = async (user: IRequestUser) => {
 
 }
 
+const getMySingleAppointment = async (appointmentId: string, user: IRequestUser) => {
 
+    const patientData = await prisma.patient.findUnique({
+        where: {
+            email: user?.email
+        }
+    });
+
+    const doctorData = await prisma.doctor.findUnique({
+        where: {
+            email: user?.email
+        }
+    });
+
+    let appointment;
+
+    if (patientData) {
+        appointment = await prisma.appointment.findFirst({
+            where: {
+                id: appointmentId,
+                patientId: patientData.id
+            },
+            include: {
+                doctor: true,
+                schedule: true
+            }
+        });
+    } else if (doctorData) {
+        appointment = await prisma.appointment.findFirst({
+            where: {
+                id: appointmentId,
+                doctorId: doctorData.id
+            },
+            include: {
+                patient: true,
+                schedule: true
+            }
+        });
+    }
+
+    if (!appointment) {
+        throw new AppError(status.NOT_FOUND, "Appointment not found");
+    }
+
+    return appointment;
+}
+const changeAppointmentStatus = async (appointmentId: string, appointmentStatus: AppointmentStatus, user: IRequestUser) => {
+    const appointmentData = await prisma.appointment.findUniqueOrThrow({
+        where: {
+            id: appointmentId,
+            // status: AppointmentStatus.SCHEDULED
+        },
+        include: {
+            doctor: true
+        }
+    });
+
+    // if (!appointmentData) {
+    //     throw new AppError(status.NOT_FOUND, "Appointment not found or already completed/cancelled");
+    // }
+
+    if (user?.role === Role.DOCTOR) {
+        if (!(user?.email === appointmentData.doctor.email))
+            throw new AppError(status.BAD_REQUEST, "This is not your appointment")
+    }
+
+    return await prisma.appointment.update({
+        where: {
+            id: appointmentId
+        },
+        data: {
+            status: appointmentStatus
+        }
+    })
+
+}
 
 export const AppointmentService = {
     bookAppointment,
     getAllAppointments,
-    getMyAppointments   
+    getMyAppointments  ,
+    getMySingleAppointment,
+    changeAppointmentStatus 
 }
