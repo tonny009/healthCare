@@ -2,13 +2,13 @@
 import { v7 as uuidv7 } from "uuid";
 //import { PaymentStatus, Role } from "../../../generated/prisma/enums";
 import { envVars } from "../../config/env";
-//import { stripe } from "../../config/stripe.config";
 import { IRequestUser } from "../../interfaces/requestUser.interface";
 import { prisma } from "../../lib/prisma";
 import status from "http-status";
-import { AppointmentStatus } from './../../../generated/prisma/enums';
+import { AppointmentStatus, Role } from './../../../generated/prisma/enums';
 import { IBookAppointmentPayload } from "./appointment.interface";
 import AppError from "../../errorHelpers/AppError";
+import { stripe } from "../../config/stripe.config";
 
 // Pay Now Book Appointment
 const bookAppointment = async (payload : IBookAppointmentPayload, user : IRequestUser) => {
@@ -223,10 +223,6 @@ const changeAppointmentStatus = async (appointmentId: string, appointmentStatus:
             doctor: true
         }
     });
-
-    // if (!appointmentData) {
-    //     throw new AppError(status.NOT_FOUND, "Appointment not found or already completed/cancelled");
-    // }
 
     if (user?.role === Role.DOCTOR) {
         if (!(user?.email === appointmentData.doctor.email))
