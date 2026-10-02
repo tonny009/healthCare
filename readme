@@ -39,3 +39,8 @@ https://www.npmjs.com/package/stripe
 Login : https://stripe.com/en-de?utm_campaign=EMEA_DE_en_Google_Search_Brand_Stripe_EXA-866170064&utm_medium=cpc&utm_source=google&utm_content=731783359321&utm_term=stripe&utm_matchtype=e&utm_adposition=&utm_device=c&gad_source=1&gad_campaignid=866170064&gbraid=0AAAAADKNRO4N3wmZZd-z1vLRhS-3aGa0j&gclid=Cj0KCQjw5vLVBhCiARIsAD56SFLp8kqNhMvpzJCz1JgSN_vvgMIjVwxGgviJ3fGIFhlBnMz9vTggHcYaAhOdEALw_wcB
 
 **Use whil live deployment of payment : https://dashboard.stripe.com/acct_1ULJBSR11ieH9z1e/test/workbench/webhooks
+
+
+Node cron : after each certain time it will perform selected task automaticly
+
+https://www.npmjs.com/package/node-cron
