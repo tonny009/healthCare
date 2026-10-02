@@ -63,7 +63,30 @@ const changeAppointmentStatus = catchAsync(async (req: Request, res: Response) =
         data: updatedAppointment
     });
 });
+const bookAppointmentWithPayLater = catchAsync(async (req: Request, res: Response) => {
+    const payload = req.body;
+    const user = req.user;
+    const appointment = await AppointmentService.bookAppointmentWithPayLater(payload, user);
+    sendResponse(res, {
+        success: true,  
+        httpStatusCode: status.CREATED,
+        message: 'Appointment booked successfully with Pay Later option',
+        data: appointment
+    });
+});
 
+const initiatePayment = catchAsync(async (req: Request, res: Response) => {
+    const appointmentId = req.params.id;
+    const user = req.user;
+    const paymentInfo = await AppointmentService.initiatePayment(appointmentId as string, user);
+
+    sendResponse(res, {
+        success: true,
+        httpStatusCode: status.OK,
+        message: 'Payment initiated successfully',
+        data: paymentInfo
+    });
+});
 
 
 export const AppointmentController = {
@@ -71,5 +94,7 @@ export const AppointmentController = {
     getAllAppointments,
     getMyAppointments,
     getMySingleAppointment,
-    changeAppointmentStatus
+    changeAppointmentStatus,
+    bookAppointmentWithPayLater,
+    initiatePayment
 }
