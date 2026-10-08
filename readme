@@ -45,3 +45,5 @@ Login : https://stripe.com/en-de?utm_campaign=EMEA_DE_en_Google_Search_Brand_Str
 Node cron : after each certain time it will perform selected task automaticly
 
 https://www.npmjs.com/package/node-cron
+
+PDFKit: https://www.npmjs.com/package/pdfkit
