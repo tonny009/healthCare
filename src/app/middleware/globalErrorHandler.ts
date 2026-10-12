@@ -5,10 +5,10 @@ import z from "zod";
 import { Prisma } from "../../generated/prisma/client";
 import { envVars } from "../config/env";
 import AppError from "../errorHelpers/AppError";
-import { handlePrismaClientKnownRequestError, handlePrismaClientUnknownError, handlePrismaClientValidationError, handlerPrismaClientInitializationError, handlerPrismaClientRustPanicError } from "../errorHelpers/handlePrismaErrors";
 import { handleZodError } from "../errorHelpers/handleZodError";
 import { TErrorResponse, TErrorSources } from "../interfaces/error.interface";
 import { deleteUploadedFilesFromGlobalErrorHandler } from "../utils/deleteUploadedFilesFromGlobalErrorHandler";
+import { handlePrismaClientKnownRequestError, handlerPrismaClientRustPanicError,handlePrismaClientUnknownError, handlePrismaClientValidationError,handlerPrismaClientInitializationError } from "../errorHelpers/handlePrismaErrors";
 
 
 
@@ -17,15 +17,6 @@ export const globalErrorHandler = async (err: any, req: Request, res: Response, 
     if (envVars.NODE_ENV === 'development') {
         console.log("Error from Global Error Handler", err);
     }
-
-    // if(req.file){
-    //     await deleteFileFromCloudinary(req.file.path)
-    // }
-
-    // if(req.files && Array.isArray(req.files) && req.files.length > 0){
-    //     const imageUrls = req.files.map((file) => file.path);
-    //     await Promise.all(imageUrls.map(url => deleteFileFromCloudinary(url))); 
-    // }
     await deleteUploadedFilesFromGlobalErrorHandler(req);
 
     let errorSources: TErrorSources[] = []
